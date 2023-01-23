@@ -9,7 +9,8 @@ function App() {
 
   const getMyActivities = async () => {
       try {
-        const res = await fetch('https://www.strava.com/api/v3/athlete/activities?access_token=cb5849f536ed706065a280e2aa5f1d2a2b5edaa7');
+        console.log(process.env.STRAVA_ACCESS_TOKEN)
+        const res = await fetch(`https://www.strava.com/api/v3/athlete/activities?cb5849f536ed706065a280e2aa5f1d2a2b5edaa7`);
         const data = await res.json();
         setActivities(data);
       }
@@ -34,7 +35,7 @@ function App() {
         <button onClick={() => filterPeloton()}>Peloton Filter</button>
       </header>
       <div>
-        {activities.map(activity => <ActivityCard key={activity.id}activity={activity}/>)}
+        {activities.map(activity => <ActivityCard key={activity.id} activity={activity}/>)}
       </div>
     </div>
   );
