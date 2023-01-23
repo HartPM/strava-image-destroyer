@@ -5,12 +5,38 @@ import ActivityCard from './Components/ActivityCard';
 
 function App() {
 
+  async function authorizationResponse() { 
+    let response = await fetch('https://www.strava.com/oauth/token', {
+      method: 'post',
+      'headers': {
+        'Accept': 'application/json, text/plain, */*',
+        'Content-Type': 'application/json'
+      },
+      'body': JSON.stringify({
+        client_id: process.env.REACT_APP_CLIENT_ID,
+        client_secret: process.env.REACT_APP_CLIENT_SECRET,
+        refresh_token: process.env.REACT_APP_REFRESH_TOKEN,
+        grant_type: 'refresh_token',
+      })
+    })
+    return response.json()
+  }
+
+  async function authorizationJson() {
+    let response = await authorizationResponse()
+    return response.access_token
+  } 
+  
+  console.log(authorizationJson())
+
+
+
   const [activities, setActivities] = React.useState([]);
 
   const getMyActivities = async () => {
       try {
         console.log(process.env.STRAVA_ACCESS_TOKEN)
-        const res = await fetch(`https://www.strava.com/api/v3/athlete/activities?cb5849f536ed706065a280e2aa5f1d2a2b5edaa7`);
+        const res = await fetch(`https://www.strava.com/api/v3/athlete/activities?${process.env.STRAVA_ACCESS_TOKEN}`);
         const data = await res.json();
         setActivities(data);
       }
