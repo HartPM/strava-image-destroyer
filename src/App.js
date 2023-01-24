@@ -4,9 +4,9 @@ import './App.css';
 import ActivityCard from './Components/ActivityCard';
 
 function App() {
+  // const [accessToken, setAccessToken] = React.useState({});
 
-  async function authorizationResponse() { 
-    let response = await fetch('https://www.strava.com/oauth/token', {
+  const authorizationResponse = fetch('https://www.strava.com/oauth/token', {
       method: 'post',
       'headers': {
         'Accept': 'application/json, text/plain, */*',
@@ -19,15 +19,19 @@ function App() {
         grant_type: 'refresh_token',
       })
     })
-    return response.json()
+    .then(response => response.json())
+    .then(data => {
+      return data.access_token;
+    })
+
+  const printAccessToken = async () => {
+    const r = await authorizationResponse
+    console.log(r)
   }
 
-  async function authorizationJson() {
-    let response = await authorizationResponse()
-    return response.access_token
-  } 
+  printAccessToken()
   
-  console.log(authorizationJson())
+  
 
 
 
