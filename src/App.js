@@ -4,8 +4,10 @@ import './App.css';
 import ActivityCard from './Components/ActivityCard';
 
 function App() {
-  // const [accessToken, setAccessToken] = React.useState({});
+  const [accessToken, setAccessToken] = React.useState();
+  const [athlete, setAthlete] = React.useState({});
 
+  // Get/Renew Access Token
   const authorizationResponse = fetch('https://www.strava.com/oauth/token', {
       method: 'post',
       'headers': {
@@ -27,9 +29,29 @@ function App() {
   const printAccessToken = async () => {
     const r = await authorizationResponse
     console.log(r)
+    setAccessToken(r)
   }
 
   printAccessToken()
+
+
+  // Get Athlete
+  const athleteObj = fetch('https://www.strava.com/api/v3/athlete', {
+    method: 'get',
+    'headers': {
+      'Authorization': `Bearer ${accessToken}`
+    }
+  })
+  .then(response => response.json())
+  .then(data => console.log(data))
+
+  const printAthleteObj = async () => {
+    const r = await athleteObj
+    // console.log(r)
+    setAthlete(r)
+  }
+
+  printAthleteObj()
   
   
 
@@ -39,8 +61,7 @@ function App() {
 
   const getMyActivities = async () => {
       try {
-        console.log(process.env.STRAVA_ACCESS_TOKEN)
-        const res = await fetch(`https://www.strava.com/api/v3/athlete/activities?${process.env.STRAVA_ACCESS_TOKEN}`);
+        const res = await fetch(`https://www.strava.com/api/v3/athlete/activities?${accessToken}`);
         const data = await res.json();
         setActivities(data);
       }
