@@ -1,11 +1,11 @@
 import * as React from 'react';
 import logo from './logo.svg';
 import './App.css';
-import ActivityCard from './Components/ActivityCard';
+// import ActivityCard from './Components/ActivityCard';
 
 function App() {
   const [accessToken, setAccessToken] = React.useState();
-  const [athlete, setAthlete] = React.useState({});
+  // const [athlete, setAthlete] = React.useState({});
 
   // Get/Renew Access Token
   const authorizationResponse = fetch('https://www.strava.com/oauth/token', {
@@ -28,30 +28,33 @@ function App() {
 
   const printAccessToken = async () => {
     const r = await authorizationResponse
-    console.log(r)
     setAccessToken(r)
+    console.log(accessToken)
   }
 
-  printAccessToken()
+  // console.log(process.env.REACT_APP_CLIENT_ID)
+  // console.log(process.env.REACT_APP_CLIENT_SECRET)
+  // console.log(process.env.REACT_APP_REFRESH_TOKEN)
+
 
 
   // Get Athlete
-  const athleteObj = fetch('https://www.strava.com/api/v3/athlete', {
-    method: 'get',
-    'headers': {
-      'Authorization': `Bearer ${accessToken}`
-    }
-  })
-  .then(response => response.json())
-  .then(data => console.log(data))
+  // const athleteObj = fetch('https://www.strava.com/api/v3/athlete', {
+  //   method: 'get',
+  //   'headers': {
+  //     'Authorization': `Bearer ${accessToken}`
+  //   }
+  // })
+  // .then(response => response.json())
+  // .then(data => console.log(data))
 
-  const printAthleteObj = async () => {
-    const r = await athleteObj
-    // console.log(r)
-    setAthlete(r)
-  }
+  // const printAthleteObj = async () => {
+  //   const r = await athleteObj
+  //   // console.log(r)
+  //   setAthlete(r)
+  // }
 
-  printAthleteObj()
+  // printAthleteObj()
   
   
 
@@ -61,9 +64,10 @@ function App() {
 
   const getMyActivities = async () => {
       try {
-        const res = await fetch(`https://www.strava.com/api/v3/athlete/activities?${accessToken}`);
+        const res = await fetch(`https://www.strava.com/api/v3/athlete/activities?access_token=${accessToken}`);
         const data = await res.json();
         setActivities(data);
+        console.log(activities)
       }
       catch (error) {
         alert(error)
@@ -79,14 +83,15 @@ function App() {
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
-        <a href='https://www.strava.com/oauth/authorize?client_id=100352&response_type=code&redirect_uri=http://localhost/exchange_token&approval_prompt=force&scope=read_all'>
+        <a href='https://www.strava.com/oauth/authorize?client_id=100352&redirect_uri=http://localhost:3000/&response_type=code&scope=activity:read_all,activity:write'>
           <button>Auth</button>
         </a>
+        <button onClick={() => printAccessToken()}>Get Access Token</button>
         <button onClick={() => getMyActivities()}>Get Activities</button>
         <button onClick={() => filterPeloton()}>Peloton Filter</button>
       </header>
       <div>
-        {activities.map(activity => <ActivityCard key={activity.id} activity={activity}/>)}
+        {/* {activities.map(activity => <ActivityCard key={activity.id} activity={activity}/>)} */}
       </div>
     </div>
   );
