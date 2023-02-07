@@ -26,7 +26,7 @@ function Activities({accessToken}) {
             <button onClick={() => getMyActivities()}>Get Activities</button>
             <button onClick={() => filterPeloton()}>Peloton Filter</button>
             <div>
-                {activities.map(activity => <ActivityCard key={activity.id} activity={activity}/>)}
+                {activities.map(activity => <ActivityCard key={activity.id} activity={activity} accessToken={accessToken} />)}
             </div>
         </>
     )
