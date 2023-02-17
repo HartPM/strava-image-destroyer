@@ -1,13 +1,14 @@
 import * as React from 'react';
 import './App.css';
+// Components
 import Auth from './Components/Auth';
 import Activities from './Components/Activities';
+import Athlete from './Components/Athlete';
 
 function App() {
-  // const [athlete, setAthlete] = React.useState({});
   const [accessToken, setAccessToken] = React.useState();
   
-  // Get/Renew Access Token
+  // Get Access Token
   const authorizationResponse = fetch('https://www.strava.com/oauth/token', {
       method: 'post',
       'headers': {
@@ -23,39 +24,16 @@ function App() {
     })
     .then(response => response.json())
     .then(data => {
-      return data.access_token;
+      setAccessToken(data.access_token)
+      console.log(accessToken);
     })
-
-  const printAccessToken = async () => {
-    const r = await authorizationResponse
-    setAccessToken(r)
-    console.log(accessToken)
-  }
-
-  // Get Athlete
-  // const athleteObj = fetch('https://www.strava.com/api/v3/athlete', {
-  //   method: 'get',
-  //   'headers': {
-  //     'Authorization': `Bearer ${accessToken}`
-  //   }
-  // })
-  // .then(response => response.json())
-  // .then(data => console.log(data))
-
-  // const printAthleteObj = async () => {
-  //   const r = await athleteObj
-  //   // console.log(r)
-  //   setAthlete(r)
-  // }
-
-  // printAthleteObj()
 
   return (
     <div className="App">
       <header className="App-header">
         <Auth />
-        <button onClick={() => printAccessToken()}>Get Access Token</button>
         <Activities accessToken={accessToken} />
+        <Athlete accessToken={accessToken} />
       </header>
     </div>
   );

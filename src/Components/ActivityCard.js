@@ -1,8 +1,37 @@
 import * as React from 'react';
 
-function ActivityCard ({ activity }) {
+function ActivityCard ({ activity, accessToken }) {
+
+    const handleDeleteImage = async () => {
+        try {
+          const res = await fetch(`https://www.strava.com/api/v3/activities/${activity.id}`, {
+            method: 'put',
+            'headers': {
+                'Accept': 'application/json, text/plain, */*',
+                'Content-Type': 'application/json'
+              },
+              'body': JSON.stringify(
+                // Add updated activity object
+                activity
+
+
+
+              )
+          });
+          const data = await res.json();
+          console.log(data);
+        }
+        catch (error) {
+          alert(error)
+        }
+      }
+
     return (
-        <p>{activity.name}</p>
+        <div>
+            <h3>{activity.name}</h3>
+            <p>{activity.total_photo_count}</p>
+            <button onClick={handleDeleteImage}>delete images</button>
+        </div>
     )
 }
 
