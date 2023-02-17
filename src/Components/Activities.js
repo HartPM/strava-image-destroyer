@@ -9,7 +9,6 @@ function Activities({accessToken}) {
           const res = await fetch(`https://www.strava.com/api/v3/athlete/activities?access_token=${accessToken}`);
           const data = await res.json();
           setActivities(data);
-          console.log(activities)
         }
         catch (error) {
           alert(error)

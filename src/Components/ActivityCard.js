@@ -5,18 +5,18 @@ function ActivityCard ({ activity, accessToken }) {
     const handleDeleteImage = async () => {
         try {
           const res = await fetch(`https://www.strava.com/api/v3/activities/${activity.id}`, {
-            method: 'post',
+            method: 'put',
             'headers': {
                 'Accept': 'application/json, text/plain, */*',
                 'Content-Type': 'application/json'
               },
-              'body': JSON.stringify({
+              'body': JSON.stringify(
                 // Add updated activity object
+                activity
 
 
 
-                
-              })
+              )
           });
           const data = await res.json();
           console.log(data);
